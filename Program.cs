@@ -9,7 +9,8 @@ namespace TicTacToe
     class Program
     {
         static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        static char[] duplicateArr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        static int player1Wins = 0;
+        static int player2Wins = 0;
         public static void Main(string[] args)
         {
             int player = 1;
@@ -18,6 +19,7 @@ namespace TicTacToe
             //loop 1: main game loop
             do
             {
+                
                 bool exception = false;
                 bool inputCorrect = true;
 
@@ -38,15 +40,17 @@ namespace TicTacToe
                         
                         if (a == 'X')
                         {
+                            player1Wins++;
                             Console.WriteLine(" Winner is Player 1");
                             
-                            Reset(duplicateArr);
+                            Reset();
                             break;
                         }
                         else if (a == 'O')
                         {
+                            player2Wins++;
                             Console.WriteLine(" Winner is Player 2");
-                            Reset(duplicateArr);
+                            Reset();
                             break;
                         }
                     }
@@ -56,7 +60,7 @@ namespace TicTacToe
 
 
                         Console.WriteLine("The match is Draw!");
-                        Reset(duplicateArr);
+                        Reset();
                         break;
                     }
                 }
@@ -69,7 +73,7 @@ namespace TicTacToe
                     player = 2;
 
                 else if(input == 0)
-                    arr = setXorO(player, input, arr);
+                    arr = setXorO(player, input);
 
                 
                 Display(arr);
@@ -86,13 +90,11 @@ namespace TicTacToe
                     try
                     {
                         input = Convert.ToInt32(Console.ReadLine());
-                        
                     }
                     catch (Exception)
                     {
                         Console.WriteLine("Incorrect Input,  Pls enter a number!");
                         exception = true;
-                        
                     }
 
                     
@@ -127,7 +129,7 @@ namespace TicTacToe
                     {
                         inputCorrect = false;
                     }
-                    arr = setXorO(player, input, arr);
+                    arr = setXorO(player, input);
 
 
                 } while (!inputCorrect);
@@ -139,7 +141,9 @@ namespace TicTacToe
         }
         public static void Display(char[] arr)
         {
+            
             Console.Clear();
+            Console.WriteLine("Player 1: 'X'  Player 2: 'O' \n");
             Console.WriteLine("   |   |   ");
             Console.WriteLine(" {0} | {1} | {2} ", arr[1], arr[2], arr[3]);
             Console.WriteLine("___|___|___");
@@ -154,12 +158,10 @@ namespace TicTacToe
             //-----------------------------------------------------------------
         }
 
-        public static char[] setXorO(int player, int input, char[] arr) 
+        public static char[] setXorO(int player, int input) 
         {
             if ((player == 1) && (input != 0))
                 arr[input] = 'X';
-
-
 
             else if ((player == 2) && (input != 0))
                 arr[input] = 'O';
@@ -172,14 +174,17 @@ namespace TicTacToe
         }
 
 
-        public static void Reset( char[] duplicateArr)
+        public static void Reset()
         {
-
+            Console.WriteLine("-------------------------Scores--------------------------");
+            Console.WriteLine("Player 1: "+ player1Wins);
+            Console.WriteLine("Player 2: " + player2Wins);
             Console.WriteLine("Press any key to play again!");
+
             string inputReset = Console.ReadLine();
             if(inputReset != null)
             {
-                
+                char[] duplicateArr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
                 arr = duplicateArr;
                 Display(arr);
             }
